@@ -55,7 +55,7 @@ class UserController extends Controller
         $data = json_decode($data, true);
         $unionId = isset($data['unionId']) ? $data['unionId'] : $data['openId'];
         $userInfo = Model\User::updateOrCreate(['union_id' => $unionId], [
-            //'open_id' => $data['openId'],
+            'open_id' => '',
             'nick_name' => $data['nickName'],
             'avatar_url' => $data['avatarUrl']
         ]);

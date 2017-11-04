@@ -117,7 +117,7 @@ class FestivalController extends Controller
         }
         $festInfo = Model\SfFestival::select('fest_id', 'orger_id', 'name', 'intro', 'sponsor', 'start_time', 'end_time', 'addr', 'logo_url')->find($festId)->toArray();
         $festInfo['isMentor'] = Model\SfFestMentor::where([['fest_id', $festId], ['user_id', $userId]])->count();
-        $festList = Model\SfFestival::select('fest_id', 'name')->get()->toArray();
+        $festList = Model\SfFestival::select('fest_id', 'name')->orderBy('created_at', 'desc')->get()->toArray();
         $projIds = Model\SfFestProject::where('fest_id', $festId)->pluck('proj_id');
         $projList = Model\User::join('project', 'user.user_id', '=', 'project.leader_id')
             ->whereIn('project.proj_id', $projIds)

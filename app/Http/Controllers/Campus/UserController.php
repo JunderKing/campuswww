@@ -16,10 +16,10 @@ class UserController extends Controller
         //2）创建火种节这个功能，统计下到底有多少人分别创建了多少个火种节；
         $orgerNum = Model\SfFestival::count(\DB::raw('distinct orger_id'));
         echo "组织者数量：$orgerNum<br>";
-        $orgerList = Model\SfFestival::from('sf_festival as A')
-            ->join('user as B', 'A.orger_id', '=', 'B.user_id')
-            ->select('B.nick_name', \DB::raw('count(*) as count'))
-            ->groupBy('A.orger_id')->get();;
+        $orgerList = Model\SfFestival::from('sf_festival')
+            ->join('user', 'sf_festival.orger_id', '=', 'user.user_id')
+            ->select('user.nick_name', \DB::raw('count(*) as count'))
+            ->groupBy('sf_festival.orger_id')->get();;
         foreach ($orgerList as $orgerObj) {
             echo '昵称：' . $orgerObj->nick_name . '; 创建火种节数量：' . $orderObj->count . '<br>';
         }

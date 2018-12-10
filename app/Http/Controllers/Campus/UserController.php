@@ -9,6 +9,28 @@ use App\Models as Model;
 
 class UserController extends Controller
 {
+    public function getData(Request $request) {
+        //1）切换火种节菜单中，到底有多少个火种节了？如何按时间顺序排列？甚至这个切换功能，能够升级到Calendar view最好；
+        $festNum = Model\SfFestival::count();
+        echo "火种节数量：$festNum<br>";
+        //2）创建火种节这个功能，统计下到底有多少人分别创建了多少个火种节；
+        $orgerNum = Model\SfFestival::count(\DB::raw('distinct orger_id'));
+        echo "组织者数量：$orgerNum<br>";
+        $orgerList = Model\SfFestival::from('cp_sf_festival as A')
+            ->join('cp_user as B', 'A.orger_id', '=', 'B.user_id')
+            ->select('B.nick_name', \DB::raw('count(*) as count'))
+            ->groupBy('A.orger_id')->get();;
+        foreach ($orgerList as $orgerObj) {
+            echo '昵称：' . $orgerObj->nick_name . '; 创建火种节数量：' . $orderObj->count . '<br>';
+        }
+        //3）项目发起人，到底有多少项目发起人了，各自项目情况如何？
+        $leaderNum = Model\Project::count(\DB::raw('distinct leader_id'));
+        echo "项目发起人数量：$leaderNum<br>";
+        //4）项目参与人，到底有多少项目参与人了，各自的参与程度如何？
+        $memberNum = Model\ProjMember::where('is_leader', 0)->count(\DB::raw('distinct user_id'));
+        echo "项目参与人数量：$memberNum<br>";
+    }
+
     public function login(Request $request)
     {
         $params = $this->validation($request, [

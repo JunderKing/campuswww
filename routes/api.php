@@ -18,6 +18,7 @@ use Illuminate\Http\Request;
 //});
 Route::group(['prefix' => 'campus', 'namespace' => 'Campus'], function(){
     //UserController
+    Route::any('getData', 'UserController@getData');
     Route::any('login', 'UserController@login');
     Route::any('getUserInfo', 'UserController@getUserInfo');
     Route::any('chgCurProject', 'UserController@chgCurProject');

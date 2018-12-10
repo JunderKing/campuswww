@@ -21,7 +21,7 @@ class UserController extends Controller
             ->select('user.nick_name', \DB::raw('count(*) as count'))
             ->groupBy('sf_festival.orger_id')->get();;
         foreach ($orgerList as $orgerObj) {
-            echo '昵称：' . $orgerObj->nick_name . ' => 创建火种节数量：' . $orgerObj->count . '<br>';
+            echo $orgerObj->nick_name . ' => 创建火种节数量：' . $orgerObj->count . '<br>';
         }
         //3）项目发起人，到底有多少项目发起人了，各自项目情况如何？
         $leaderNum = Model\Project::count(\DB::raw('distinct leader_id'));
